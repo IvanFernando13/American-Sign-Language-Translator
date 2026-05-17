@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASL Editor 70-F</title>
+    <style>
+        body { background: #f0f2f5; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .wrapper { position: relative; width: 600px; height: 600px; border-radius: 20px; overflow: hidden; border: 5px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        video, canvas { position: absolute; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .editor-box { width: 600px; margin-top: 20px; }
+        textarea { width: 100%; height: 100px; padding: 15px; border-radius: 15px; border: 2px solid #ddd; font-size: 1.5rem; box-sizing: border-box; }
+        .prog-bg { width: 600px; height: 8px; background: #ddd; margin-top: 15px; border-radius: 5px; overflow: hidden; }
+        #bar { width: 0%; height: 100%; background: #4caf50; transition: width 0.1s; }
+    </style>
+</head>
+<body>
+    <h1>🤟 ASL Research Editor</h1>
+    <div class="wrapper">
+        <video id="v" autoplay playsinline></video>
+        <canvas id="c"></canvas>
+    </div>
+    <div class="prog-bg"><div id="bar"></div></div>
+    <div id="stat">Detecting: <span>None</span></div>
+    <div class="editor-box"><textarea id="e" placeholder="Hold sign to type..."></textarea></div>
+
+    <script>
+        const v = document.getElementById('v'), c = document.getElementById('c'), ctx = c.getContext('2d');
+        const e = document.getElementById('e'), bar = document.getElementById('bar'), stat = document.querySelector('#stat span');
+        let last = "", count = 0;
+
+        navigator.mediaDevices.getUserMedia({video:true}).then(s => v.srcObject = s);
+
+        setInterval(() => {
+            const tmp = document.createElement('canvas'); tmp.width = 640; tmp.height = 480;
+            tmp.getContext('2d').drawImage(v, 0, 0, 640, 480);
+            fetch('/predict', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({image:tmp.toDataURL('image/jpeg')})})
+            .then(r => r.json()).then(d => {
+                stat.innerText = d.prediction;
+                if(d.prediction !== "None" && d.prediction === last) count++;
+                else { count = 0; last = d.prediction; }
+                bar.style.width = (count/10)*100 + "%";
+                if(count >= 10) { 
+                    if(d.prediction === "space") e.value += " ";
+                    else if(d.prediction === "del") e.value = e.value.slice(0,-1);
+                    else if(d.prediction.length === 1) e.value += d.prediction;
+                    count = 0; 
+                }
+                ctx.clearRect(0,0,c.width,c.height);
+                if(d.box) { 
+                    ctx.strokeStyle="#ff9800"; ctx.lineWidth=4; 
+                    ctx.strokeRect(d.box.x*(c.width/640), d.box.y*(c.height/480), d.box.w*(c.width/640), d.box.h*(c.height/480)); 
+                }
+            });
+        }, 200);
+    </script>
+</body>
+</html>

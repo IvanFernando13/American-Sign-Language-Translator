@@ -1,0 +1,49 @@
+body {
+    background-color: #9db2bf; /* Background color from your screenshot */
+    font-family: 'Times New Roman', serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #dde6ed; /* Card color from your screenshot */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+}
+
+video, canvas {
+    border: 3px solid #526d82;
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+#result-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    color: #27374d;
+}
+
+.back-btn {
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    color: #526d82;
+    font-weight: bold;
+}
+
+/* Add this to your style.css */
+video, #capture-canvas {
+    transform: scaleX(-1); /* Flips the video horizontally */
+    -webkit-transform: scaleX(-1);
+}
