@@ -5,7 +5,6 @@ from sklearn.utils import class_weight
 import json
 import os
 
-# Load 70-feature data
 X_train = np.load("X_train.npy")
 y_train = np.load("y_train.npy")
 with open("label_map.json", "r") as f:
@@ -14,7 +13,7 @@ with open("label_map.json", "r") as f:
 num_classes = len(np.unique(y_train))
 y_cat = tf.keras.utils.to_categorical(y_train, num_classes)
 
-# Focal Weighting for the Research Cluster
+
 weights = class_weight.compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
 weights_dict = {i: w for i, w in enumerate(weights)}
 for char in ['R', 'U', 'W', 'Y', 'M', 'N', 'T']:
@@ -22,7 +21,7 @@ for char in ['R', 'U', 'W', 'Y', 'M', 'N', 'T']:
         weights_dict[label_map[char]] *= 8.0 
 
 model = tf.keras.Sequential([
-    Input(shape=(70,)), # Updated to 70
+    Input(shape=(70,)), 
     GaussianNoise(0.01),
     Dense(512, activation='relu'),
     BatchNormalization(),

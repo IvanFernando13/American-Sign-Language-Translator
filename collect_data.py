@@ -1,9 +1,9 @@
 import cv2
 import os
 
-# Configuration
+
 DATA_DIR = "dataset/Train_Alphabet" 
-labels = ['R', 'U', 'V', 'W', 'Y'] # The "Final Boss" Cluster
+labels = ['A', 'B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'] 
 
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)

@@ -13,19 +13,18 @@ def get_70_features(hand_landmarks, scale):
     wrist = hand_landmarks.landmark[0]
     features = []
     
-    # 1-63: Relative Coordinates
+    
     for lm in hand_landmarks.landmark:
         features.extend([(lm.x - wrist.x)/scale, (lm.y - wrist.y)/scale, (lm.z - wrist.z)/scale])
     
-    # 64-68: Tip-to-Wrist Distances
+   
     tips = [4, 8, 12, 16, 20]
     for tip_idx in tips:
         tip = hand_landmarks.landmark[tip_idx]
         dist = np.sqrt((tip.x-wrist.x)**2 + (tip.y-wrist.y)**2 + (tip.z-wrist.z)**2)
         features.append(dist/scale)
 
-    # 69: Index Tip to Middle Tip (Crucial for R vs U)
-    # 70: Thumb Tip to Pinky Tip (Crucial for Y)
+    
     l8, l12, l4, l20 = hand_landmarks.landmark[8], hand_landmarks.landmark[12], hand_landmarks.landmark[4], hand_landmarks.landmark[20]
     dist_8_12 = np.sqrt((l8.x-l12.x)**2 + (l8.y-l12.y)**2 + (l8.z-l12.z)**2)
     dist_4_20 = np.sqrt((l4.x-l20.x)**2 + (l4.y-l20.y)**2 + (l4.z-l20.z)**2)

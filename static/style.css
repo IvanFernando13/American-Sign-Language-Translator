@@ -1,5 +1,5 @@
 body {
-    background-color: #9db2bf; /* Background color from your screenshot */
+    background-color: #9db2bf; 
     font-family: 'Times New Roman', serif;
     display: flex;
     flex-direction: column;
@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    background-color: #dde6ed; /* Card color from your screenshot */
+    background-color: #dde6ed; 
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -42,8 +42,7 @@ video, canvas {
     font-weight: bold;
 }
 
-/* Add this to your style.css */
 video, #capture-canvas {
-    transform: scaleX(-1); /* Flips the video horizontally */
+    transform: scaleX(-1); 
     -webkit-transform: scaleX(-1);
 }
